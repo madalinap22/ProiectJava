@@ -23,11 +23,12 @@ import java.time.LocalDate;
 public class ProductDTO {
     private Integer id;
     private String name;
-    private String categorie;
     private float pretAchizitie;
     private float pretVanzare;
     private LocalDate BBD;
     private int cantitateAchizitionata;
     private int cantitateVanduta;
     private Integer supplierId;
+    private Integer categoryId;
+
 }

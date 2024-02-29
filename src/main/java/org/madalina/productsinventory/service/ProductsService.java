@@ -1,5 +1,6 @@
 package org.madalina.productsinventory.service;
 
+import org.madalina.productsinventory.entities.Category;
 import org.madalina.productsinventory.entities.Product;
 import org.madalina.productsinventory.dtoDB.ProductDTO;
 import org.madalina.productsinventory.entities.Supplier;
@@ -9,11 +10,11 @@ import org.madalina.productsinventory.exceptions.InvalidQuantityException;
 import org.madalina.productsinventory.exceptions.ProductNotFoundException;
 import org.madalina.productsinventory.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.madalina.productsinventory.repositories.SupplierRepository;
+import org.madalina.productsinventory.repositories.CategoryRepository;
 
 
 @Service
@@ -21,10 +22,13 @@ public class ProductsService {
 
     private final ProductRepository productRepository;
     private final SupplierRepository supplierRepository;
+    private final CategoryRepository categoryRepository;
 
-    public ProductsService(ProductRepository productRepository, SupplierRepository supplierRepository) {
+    public ProductsService(ProductRepository productRepository, SupplierRepository supplierRepository,
+                           CategoryRepository categoryRepository) {
         this.productRepository = productRepository;
         this.supplierRepository = supplierRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     public List<ProductDTO> getProduseDB() {
@@ -36,7 +40,9 @@ public class ProductsService {
             ProductDTO dto = new ProductDTO();
             dto.setId(product.getId());
             dto.setName(product.getName());
-            dto.setCategorie(product.getCategorie());
+            if (product.getCategory() != null) {
+                dto.setCategoryId(product.getCategory().getId());
+            }
             dto.setPretAchizitie(product.getPretAchizitie());
             dto.setPretVanzare(product.getPretVanzare());
             dto.setBBD(product.getBBD());
@@ -57,13 +63,16 @@ public class ProductsService {
         ProductDTO productDTO = new ProductDTO();
         productDTO.setId(product.getId());
         productDTO.setName(product.getName());
-        productDTO.setCategorie(product.getCategorie());
         productDTO.setPretAchizitie(product.getPretAchizitie());
         productDTO.setPretVanzare(product.getPretVanzare());
         productDTO.setBBD(product.getBBD());
         productDTO.setCantitateAchizitionata(product.getCantitateAchizitionata());
         productDTO.setCantitateVanduta(product.getCantitateVanduta());
         productDTO.setSupplierId(product.getSupplier() != null ? product.getSupplier().getId() : null);
+        if (product.getCategory() != null) {
+            productDTO.setCategoryId(product.getCategory().getId());
+        }
+
         return productDTO;
     }
 
@@ -93,7 +102,6 @@ public class ProductsService {
         Product product = new Product();
 
         product.setName(productDTO.getName());
-        product.setCategorie(productDTO.getCategorie());
         product.setPretAchizitie(productDTO.getPretAchizitie());
         product.setPretVanzare(productDTO.getPretVanzare());
         product.setBBD(productDTO.getBBD());
@@ -103,6 +111,11 @@ public class ProductsService {
             Supplier supplier = supplierRepository.findById(productDTO.getSupplierId())
                     .orElseThrow(() -> new RuntimeException("Furnizorul cu id-ul " + productDTO.getSupplierId() + " nu a putut fi gasit."));
             product.setSupplier(supplier);
+        }
+        if (productDTO.getCategoryId() != null) {
+            Category category = categoryRepository.findById(productDTO.getCategoryId().longValue())
+                    .orElseThrow(() -> new RuntimeException("Categoria cu id-ul " + productDTO.getCategoryId() + " nu a putut fi găsită."));
+            product.setCategory(category);
         }
         productRepository.save(product);
 
@@ -131,8 +144,14 @@ public class ProductsService {
         } else {
             product.setSupplier(null); // Dacă supplierId este null, înlătură asocierea cu un furnizor
         }
+        if (productDTO.getCategoryId() != null) {
+            Category category = categoryRepository.findById(productDTO.getCategoryId().longValue())
+                    .orElseThrow(() -> new RuntimeException("Categoria cu id-ul " + productDTO.getCategoryId() + " nu a putut fi găsită."));
+            product.setCategory(category);
+        } else {
+            product.setCategory(null);
+        }
         product.setName(productDTO.getName());
-        product.setCategorie(productDTO.getCategorie());
         product.setPretAchizitie(productDTO.getPretAchizitie());
         product.setPretVanzare(productDTO.getPretVanzare());
         product.setBBD(productDTO.getBBD());

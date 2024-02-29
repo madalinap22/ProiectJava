@@ -13,7 +13,6 @@ public class Product {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
     private String name;
-    private String categorie;
     private float pretAchizitie;
     private float pretVanzare;
     private LocalDate BBD;
@@ -22,19 +21,24 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supplier_id")
-    @JsonBackReference
+    @JsonBackReference //pt loop in Postman
     private Supplier supplier;
+
+    // Noua relație cu Category
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    @JsonBackReference //pt loop in Postman
+    private Category category;
 
     public Product()  // Constructor necesar pentru JPA
     {
 
     }
 
-    public Product(int id, String name, String categorie, float pretAchizitie, float pretVanzare, LocalDate BBD,
-                   int cantitateAchizitionata, int cantitateVanduta, Supplier supplier) {
+    public Product(int id, String name,float pretAchizitie, float pretVanzare, LocalDate BBD,
+                   int cantitateAchizitionata, int cantitateVanduta, Supplier supplier, Category category) {
         this.id = id;
         this.name = name;
-        this.categorie = categorie;
         this.pretAchizitie=pretAchizitie;
         this.pretVanzare = pretVanzare;
         this.BBD = BBD;
@@ -52,9 +56,6 @@ public class Product {
         return name;
     }
 
-    public String getCategorie() {
-        return categorie;
-    }
 
     public float getPretAchizitie() {
         return pretAchizitie;
@@ -84,9 +85,7 @@ public class Product {
         this.name = name;
     }
 
-    public void setCategorie(String categorie) {
-        this.categorie = categorie;
-    }
+
 
     public void setPretAchizitie(float pretAchizitie) {
         this.pretAchizitie = pretAchizitie;
@@ -117,7 +116,21 @@ public class Product {
         this.supplier = supplier;
     }
 
+    public Category getCategory() {
+        return category;
+    }
 
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Integer getSupplierId() {
+        return supplier != null ? supplier.getId() : null;
+    }
+
+    public Integer getCategoryId() {
+        return category != null ? category.getId() : null;
+    }
 
 }
 
