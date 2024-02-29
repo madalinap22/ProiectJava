@@ -6,6 +6,7 @@ import org.madalina.productsinventory.entities.Supplier;
 import org.madalina.productsinventory.exceptions.InvalidExpDateException;
 import org.madalina.productsinventory.exceptions.InvalidPriceException;
 import org.madalina.productsinventory.exceptions.InvalidQuantityException;
+import org.madalina.productsinventory.exceptions.ProductNotFoundException;
 import org.madalina.productsinventory.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -49,11 +50,11 @@ public class ProductsService {
         }).collect(Collectors.toList());
     }
 
-    public ProductDTO getProductById2(int id)
-    {
-        Product product = productRepository.getReferenceById(id);
+    public ProductDTO getProductById2(int id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Produsul cu ID-ul " + id + " nu a putut fi găsit."));
 
-        ProductDTO productDTO= new ProductDTO();
+        ProductDTO productDTO = new ProductDTO();
         productDTO.setId(product.getId());
         productDTO.setName(product.getName());
         productDTO.setCategorie(product.getCategorie());
@@ -63,7 +64,7 @@ public class ProductsService {
         productDTO.setCantitateAchizitionata(product.getCantitateAchizitionata());
         productDTO.setCantitateVanduta(product.getCantitateVanduta());
         productDTO.setSupplierId(product.getSupplier() != null ? product.getSupplier().getId() : null);
-       return productDTO;
+        return productDTO;
     }
 
 

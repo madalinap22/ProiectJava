@@ -27,5 +27,11 @@ public class SupplierController {
         return new ResponseEntity<>(suppliers, HttpStatus.OK);
     }
 
+    @GetMapping("/{summary}")
+    public ResponseEntity<List<SupplierDTO>> getSuppliersSummary() {
+        List<SupplierDTO> summaries = supplierService.getSuppliersSummary();
+        return ResponseEntity.ok(summaries);
+    }
+
 
 }
