@@ -1,6 +1,6 @@
 package org.madalina.productsinventory.controller;
 
-import org.madalina.productsinventory.dto.Product;
+import org.madalina.productsinventory.entities.Product;
 import org.madalina.productsinventory.dtoDB.ProductDTO;
 import org.madalina.productsinventory.service.ProductsService;
 import org.springframework.http.HttpStatus;
@@ -20,8 +20,9 @@ public class ProductsController {
     }
 
     @GetMapping
-    public List<Product> getProducts() {
-        return productsService.getProduseDB();
+    public ResponseEntity<List<ProductDTO>> getProducts() {
+        List<ProductDTO> productsDTO = productsService.getProduseDB();
+        return new ResponseEntity<>(productsDTO, HttpStatus.OK);
     }
 
     //obtinem datele unui produs cu un anumit ID
@@ -35,15 +36,15 @@ public class ProductsController {
     public ResponseEntity<?> deleteProductById(@PathVariable("id") int id) {
         boolean isDeleted = productsService.deleteProductByIdDB(id);
         if (isDeleted) {
-            return ResponseEntity.ok().body("Product with ID " + id + " deleted successfully.");
+            return ResponseEntity.ok().body("Produsul cu ID-ul " + id + " a fost sters cu succes.");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product with ID " + id + " not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produsul cu ID-ul " + id + " nu a putut fi gasit.");
         }
     }
 
     @PostMapping      //http://localhost:8080/products  cu POST BODY raw Text->Json
     public ResponseEntity<Product> createProduct(@RequestBody ProductDTO productDTO){
-        productsService.createProduct(productDTO);
+        productsService.createProductDB(productDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
 
     }

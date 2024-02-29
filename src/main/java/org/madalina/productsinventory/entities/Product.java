@@ -1,7 +1,7 @@
-package org.madalina.productsinventory.dto;
+package org.madalina.productsinventory.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
 
@@ -20,13 +20,18 @@ public class Product {
     private int cantitateAchizitionata;
     private int cantitateVanduta;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "supplier_id")
+    @JsonBackReference
+    private Supplier supplier;
+
     public Product()  // Constructor necesar pentru JPA
     {
 
     }
 
     public Product(int id, String name, String categorie, float pretAchizitie, float pretVanzare, LocalDate BBD,
-                   int cantitateAchizitionata, int cantitateVanduta) {
+                   int cantitateAchizitionata, int cantitateVanduta, Supplier supplier) {
         this.id = id;
         this.name = name;
         this.categorie = categorie;
@@ -35,6 +40,7 @@ public class Product {
         this.BBD = BBD;
         this.cantitateAchizitionata=cantitateAchizitionata;
         this.cantitateVanduta=cantitateVanduta;
+        this.supplier = supplier;
     }
 
     public int getId() {
@@ -103,7 +109,13 @@ public class Product {
         this.cantitateVanduta = cantitateVanduta1;
     }
 
+    public Supplier getSupplier() {
+        return supplier;
+    }
 
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
 
 
 

@@ -3,7 +3,6 @@ package org.madalina.productsinventory.dtoDB;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
 
 
@@ -22,6 +21,7 @@ import java.time.LocalDate;
 //@Builder
 @NoArgsConstructor
 public class ProductDTO {
+    private Integer id;
     private String name;
     private String categorie;
     private float pretAchizitie;
@@ -29,4 +29,5 @@ public class ProductDTO {
     private LocalDate BBD;
     private int cantitateAchizitionata;
     private int cantitateVanduta;
+    private Integer supplierId;
 }
