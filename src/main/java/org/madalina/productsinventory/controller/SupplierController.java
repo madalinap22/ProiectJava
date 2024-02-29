@@ -1,5 +1,6 @@
 package org.madalina.productsinventory.controller;
 
+import org.madalina.productsinventory.dtoDB.SupplierDTO;
 import org.madalina.productsinventory.entities.Supplier;
 import org.madalina.productsinventory.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +26,6 @@ public class SupplierController {
         List<Supplier> suppliers = supplierService.findAllSuppliers();
         return new ResponseEntity<>(suppliers, HttpStatus.OK);
     }
+
 
 }

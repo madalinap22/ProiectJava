@@ -1,5 +1,7 @@
 package org.madalina.productsinventory.service;
 
+import org.madalina.productsinventory.dtoDB.SupplierDTO;
+import org.madalina.productsinventory.entities.Product;
 import org.madalina.productsinventory.entities.Supplier;
 import org.madalina.productsinventory.repositories.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,8 @@ public class SupplierService {
     public List<Supplier> findAllSuppliers() {
         return supplierRepository.findAll();
     }
+
+
 
 
 

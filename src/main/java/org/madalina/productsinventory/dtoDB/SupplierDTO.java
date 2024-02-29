@@ -10,4 +10,6 @@ public class SupplierDTO {
     private String name;
     private String contactInfo;
 
+
+
 }

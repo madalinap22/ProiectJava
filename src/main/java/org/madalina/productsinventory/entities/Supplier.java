@@ -62,16 +62,8 @@ public class Supplier {
         this.products = products;
     }
 
-    // Metode pentru adăugarea și eliminarea produselor
-    public void addProduct(Product product) {
-        products.add(product);
-        product.setSupplier(this);
-    }
 
-    public void removeProduct(Product product) {
-        products.remove(product);
-        product.setSupplier(null);
-    }
+
 
 
 }

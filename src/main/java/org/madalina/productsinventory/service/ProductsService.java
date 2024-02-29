@@ -3,8 +3,13 @@ package org.madalina.productsinventory.service;
 import org.madalina.productsinventory.entities.Product;
 import org.madalina.productsinventory.dtoDB.ProductDTO;
 import org.madalina.productsinventory.entities.Supplier;
+import org.madalina.productsinventory.exceptions.InvalidExpDateException;
+import org.madalina.productsinventory.exceptions.InvalidPriceException;
+import org.madalina.productsinventory.exceptions.InvalidQuantityException;
 import org.madalina.productsinventory.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.madalina.productsinventory.repositories.SupplierRepository;
@@ -49,6 +54,7 @@ public class ProductsService {
         Product product = productRepository.getReferenceById(id);
 
         ProductDTO productDTO= new ProductDTO();
+        productDTO.setId(product.getId());
         productDTO.setName(product.getName());
         productDTO.setCategorie(product.getCategorie());
         productDTO.setPretAchizitie(product.getPretAchizitie());
@@ -71,6 +77,18 @@ public class ProductsService {
     }
 
     public void createProductDB(ProductDTO productDTO) {
+        if (productDTO.getPretAchizitie() < 0 || productDTO.getPretVanzare() < 0) {
+            throw new InvalidPriceException("Atentie! Pretul de achizitie/ pretul de vanzare trebuie sa fie pozitive.");
+        }
+
+        if (productDTO.getCantitateVanduta() > productDTO.getCantitateAchizitionata()) {
+            throw new InvalidQuantityException("Atentie! Cantitatea vandută nu poate fi mai mare decat cantitatea achizitionata.");
+        }
+
+        if (productDTO.getBBD().isBefore(LocalDate.now())) {
+            throw new InvalidExpDateException("Atentie! Data de expirare nu poate fi in trecut.");
+        }
+
         Product product = new Product();
 
         product.setName(productDTO.getName());
@@ -93,6 +111,18 @@ public class ProductsService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Produsul cu id-ul " + id +" nu a putut fi gasit."));
 
+        if (productDTO.getPretAchizitie() < 0 || productDTO.getPretVanzare() < 0) {
+            throw new InvalidPriceException("Atentie! Pretul de achizitie/ pretul de vanzare trebuie sa fie pozitive.");
+        }
+
+        if (productDTO.getCantitateVanduta() > productDTO.getCantitateAchizitionata()) {
+            throw new InvalidQuantityException("Atentie! Cantitatea vandută nu poate fi mai mare decat cantitatea achizitionata.");
+        }
+
+        if (productDTO.getBBD().isBefore(LocalDate.now())) {
+            throw new InvalidExpDateException("Atentie! Data de expirare nu poate fi in trecut.");
+        }
+
         if (productDTO.getSupplierId() != null) {
             Supplier supplier = supplierRepository.findById(productDTO.getSupplierId())
                     .orElseThrow(() -> new RuntimeException("Furnizorul cu id-ul " + productDTO.getSupplierId() + " nu a putut fi gasit."));
@@ -111,8 +141,8 @@ public class ProductsService {
         // Salvează produsul actualizat în baza de date
         Product savedProduct = productRepository.save(product);
 
-        // Asigură-te că setezi ID-ul produsului salvat în DTO pentru a fi returnat
-        productDTO.setId(savedProduct.getId()); // Aici setezi ID-ul
+
+        productDTO.setId(savedProduct.getId());
 
         return productDTO;
     }
