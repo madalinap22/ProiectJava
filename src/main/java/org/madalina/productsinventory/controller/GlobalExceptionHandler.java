@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+
+//sau: @ExceptionHandler({InvalidQuantit.class, InvalidPrice.class})
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidQuantityException.class)
