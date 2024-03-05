@@ -35,8 +35,8 @@ public class ProductsService {
         // Obținerea tuturor produselor din baza de date
         List<Product> products = productRepository.findAll();
 
-        // Transformarea fiecărui produs în ProductDTO
-        return products.stream().map(product -> {
+        // transform fiecare produs in ProductDTO
+        return products.stream().map(product -> {  //expresie lambda care transforma fiecare obiect de tip Product in obiect de tip ProductDTO.
             ProductDTO dto = new ProductDTO();
             dto.setId(product.getId());
             dto.setName(product.getName());
@@ -48,12 +48,12 @@ public class ProductsService {
             dto.setBBD(product.getBBD());
             dto.setCantitateAchizitionata(product.getCantitateAchizitionata());
             dto.setCantitateVanduta(product.getCantitateVanduta());
-            // Setarea supplierId; verifică dacă produsul are un furnizor asociat
+            // verific daca produsul are un furnizor asociat
             if (product.getSupplier() != null) {
                 dto.setSupplierId(product.getSupplier().getId());
             }
             return dto;
-        }).collect(Collectors.toList());
+        }).collect(Collectors.toList()); //transform un flux de obiecte (stream) intr-o listă
     }
 
     public ProductDTO getProductById2(int id) {
@@ -113,7 +113,7 @@ public class ProductsService {
             product.setSupplier(supplier);
         }
         if (productDTO.getCategoryId() != null) {
-            Category category = categoryRepository.findById(productDTO.getCategoryId().longValue())
+            Category category = categoryRepository.findById(productDTO.getCategoryId())
                     .orElseThrow(() -> new RuntimeException("Categoria cu id-ul " + productDTO.getCategoryId() + " nu a putut fi găsită."));
             product.setCategory(category);
         }
@@ -140,12 +140,12 @@ public class ProductsService {
         if (productDTO.getSupplierId() != null) {
             Supplier supplier = supplierRepository.findById(productDTO.getSupplierId())
                     .orElseThrow(() -> new RuntimeException("Furnizorul cu id-ul " + productDTO.getSupplierId() + " nu a putut fi gasit."));
-            product.setSupplier(supplier); // Actualizează furnizorul produsului
+            product.setSupplier(supplier); // Actualizeaza furnizorul produsului
         } else {
-            product.setSupplier(null); // Dacă supplierId este null, înlătură asocierea cu un furnizor
+            product.setSupplier(null); // Dacă supplierId este null, inlatura asocierea cu un furnizor
         }
         if (productDTO.getCategoryId() != null) {
-            Category category = categoryRepository.findById(productDTO.getCategoryId().longValue())
+            Category category = categoryRepository.findById(productDTO.getCategoryId()) //.longValue() pt long
                     .orElseThrow(() -> new RuntimeException("Categoria cu id-ul " + productDTO.getCategoryId() + " nu a putut fi găsită."));
             product.setCategory(category);
         } else {
@@ -158,11 +158,11 @@ public class ProductsService {
         product.setCantitateAchizitionata(productDTO.getCantitateAchizitionata());
         product.setCantitateVanduta(productDTO.getCantitateVanduta());
 
-        // Salvează produsul actualizat în baza de date
+        // Salvez produsul actualizat in baza de date
         Product savedProduct = productRepository.save(product);
 
 
-        productDTO.setId(savedProduct.getId());
+        productDTO.setId(savedProduct.getId());  //actualizez ID-ul produsului in ProductDTO ca sa sa fie salvat in BD dupa actualizare
 
         return productDTO;
     }

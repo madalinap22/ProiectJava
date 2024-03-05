@@ -16,12 +16,4 @@ public class SupplierDTO {
     private Double totalValue;
 
 
-    //in caz de nevoie
-    public SupplierDTO(int id, String name, String contactInfo) {
-        this.id = id;
-        this.name = name;
-        this.contactInfo = contactInfo;
-    }
-
-
 }

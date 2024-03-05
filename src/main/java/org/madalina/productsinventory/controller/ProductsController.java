@@ -45,14 +45,14 @@ public class ProductsController {
     @PostMapping      //http://localhost:8080/products  cu POST BODY raw Text->Json
     public ResponseEntity<Product> createProduct(@RequestBody ProductDTO productDTO){
         productsService.createProductDB(productDTO);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);   //returneaza obiectul creat
 
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}")   //doar returnarea unei confirmari
     public ResponseEntity<?> updateProduct(@PathVariable("id") Integer id, @RequestBody ProductDTO productDTO) {
         ProductDTO updatedProductDTO = productsService.updateProductDB(id, productDTO);
-        return ResponseEntity.ok(updatedProductDTO); // Returnează DTO-ul actualizat + un raspuns OK
+        return ResponseEntity.ok(updatedProductDTO);
     }
 
 

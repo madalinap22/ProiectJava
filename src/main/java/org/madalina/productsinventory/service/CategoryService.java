@@ -13,7 +13,9 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository) {
+    public CategoryService(CategoryRepository categoryRepository)
+    {
+
         this.categoryRepository = categoryRepository;
     }
 
@@ -21,15 +23,20 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Optional<Category> findCategoryById(Long id) {
-        return categoryRepository.findById(id);
-    }
 
-    public Category saveCategory(Category category) {
-        return categoryRepository.save(category);
-    }
 
-    public void deleteCategory(Long id) {
-        categoryRepository.deleteById(id);
-    }
+
+
+
+//    public Optional<Category> findCategoryById(Long id) {
+//        return categoryRepository.findById(id);
+//    }
+//
+//    public Category saveCategory(Category category) {
+//        return categoryRepository.save(category);
+//    }
+//
+//    public void deleteCategory(Long id) {
+//        categoryRepository.deleteById(id);
+//    }
 }

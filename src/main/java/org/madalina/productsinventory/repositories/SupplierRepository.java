@@ -24,7 +24,7 @@ public interface SupplierRepository extends JpaRepository<Supplier, Integer>{
             "    \"madalina-schema\".products p ON s.id = p.supplier_id \n" +
             "GROUP BY \n" +
             "    s.id, s.name, s.contact_info;", nativeQuery = true)
-    List<Object[]> findSuppliersWithProductSummary();
+    List<Object[]> findSuppliersWithProductSummary();  //lista de obiecte de tipul Object[] = query returneaza valori calculate si info din mai multe tabele
 
 
 

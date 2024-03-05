@@ -28,7 +28,7 @@ public class Supplier {
         this.contactInfo = contactInfo;
     }
 
-    // Getteri și setteri
+
     public int getId() {
         return id;
     }
@@ -54,13 +54,13 @@ public class Supplier {
     }
 
 
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
+//    public List<Product> getProducts() {
+//        return products;
+//    }
+//
+//    public void setProducts(List<Product> products) {
+//        this.products = products;
+//    }
 
 
 

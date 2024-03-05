@@ -124,13 +124,7 @@ public class Product {
         this.category = category;
     }
 
-    public Integer getSupplierId() {
-        return supplier != null ? supplier.getId() : null;
-    }
 
-    public Integer getCategoryId() {
-        return category != null ? category.getId() : null;
-    }
 
 }
 
